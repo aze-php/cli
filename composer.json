@@ -1,5 +1,5 @@
 {
-    "name": "airmanbzh/aze-installer",
+    "name": "aze-php/cli",
     "description": "Aze application installer.",
     "keywords": ["aze","installer"],
     "license": "MIT",
