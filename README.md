@@ -1,4 +1,7 @@
-# AZE-CLI
+# AZE Installer
+```bash
+composer global require "aze/installer"
+```
 
 ## How to
 To launch a local server
