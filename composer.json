@@ -1,5 +1,5 @@
 {
-    "name": "aze/installer",
+    "name": "aze/cli",
     "description": "Aze application installer.",
     "keywords": ["aze","installer"],
     "license": "MIT",

@@ -1,6 +1,6 @@
 # AZE Installer
 ```bash
-composer global require "aze/installer"
+composer global require "aze/cli"
 ```
 
 ## How to
