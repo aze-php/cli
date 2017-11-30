@@ -5,6 +5,8 @@ if (file_exists(__DIR__.'/../../autoload.php')) {
 } else {
     require __DIR__.'/vendor/autoload.php';
 }
-$app = new Symfony\Component\Console\Application('AZE Installer', '1.0.0');
+$app = new Symfony\Component\Console\Application('AZE cli', '1.0.0');
+$app->add(new AZE\console\command\NewCommand());
+$app->add(new AZE\console\command\ControllerCommand());
 $app->add(new AZE\console\command\ServeCommand());
 $app->run();
