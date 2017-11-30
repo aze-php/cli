@@ -1,5 +1,5 @@
 {
-    "name": "aze-php/cli",
+    "name": "aze/installer",
     "description": "Aze application installer.",
     "keywords": ["aze","installer"],
     "license": "MIT",
