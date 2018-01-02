@@ -1,0 +1,7 @@
+vendor/
+.idea/aze-installer.iml
+.idea/inspectionProfiles/
+.idea/modules.xml
+.idea/workspace.xml
+composer.lock
+composer.phar

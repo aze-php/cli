@@ -1,25 +1,24 @@
 <?php
-
 namespace AZE\console\command;
 
 use AZE\ComposerHelper;
-use Symfony\Component\Console\Exception\RuntimeException;
+use AZE\Resource;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NewCommand extends \Symfony\Component\Console\Command\Command
+class NewCommand extends CommandConfiguration
 {
-    private $dir;
-
     private $composer;
 
     private $projectPath = null;
     private $projectName = null;
 
+    protected $parameters = array('sourceDir'=>null, 'publicDir'=>null, 'config'=>null, 'without-aop'=>null);
+
     /**
-     * Configure the command options.
+     * CommandConfiguration the command options.
      *
      * @return void
      */
@@ -28,7 +27,11 @@ class NewCommand extends \Symfony\Component\Console\Command\Command
         $this
             ->setName('new')
             ->setDescription('Create a new AZE application')
-            ->addArgument('name', InputArgument::OPTIONAL, "Name of your application");
+            ->addArgument('name', InputArgument::OPTIONAL, "Name of your application")
+            ->addOption('sourceDir', 'src', InputOption::VALUE_REQUIRED, 'Directory containing your sources', 'src')
+            ->addOption('publicDir', 'public', InputOption::VALUE_REQUIRED, 'Directory containing your public files', 'web')
+            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Configuration file to serve your application', 'config.properties')
+            ->addOption('without-aop', null, InputOption::VALUE_OPTIONAL, 'Deploy your application without aop activated', "true");
     }
 
     /**
@@ -54,7 +57,13 @@ class NewCommand extends \Symfony\Component\Console\Command\Command
 
         $this->projectName = basename($this->projectPath);
 
-        $this->createRequiredDirectories($output);
+        $this->create($output);
+
+        $this->composer->execute("init -n --name={$this->projectName} --description={$this->projectName}");
+
+        if (!$this->parameters['without-aop']) {
+            $this->composer->execute("require goaop/framework");
+        }
 
         $this->composer->execute("require aze/aze");
         $this->composer->execute("require aze/dumper");
@@ -63,38 +72,87 @@ class NewCommand extends \Symfony\Component\Console\Command\Command
         $output->writeln("You can use the following command to serve your application : aze serve");
     }
 
-    private function createRequiredDirectories(OutputInterface $output)
+    private function create(OutputInterface $output)
     {
-        if (!file_exists('private')) {
-            $output->writeln('Create "private" directory');
-            mkdir('private');
+        if (!file_exists($this->parameters['sourceDir'])) {
+            $output->writeln("Create \"{$this->parameters['sourceDir']}\" directory");
+            mkdir($this->parameters['sourceDir']);
         }
 
-        if (!file_exists('web')) {
-            $output->writeln('Create "web" directory');
-            mkdir('web');
+        if (!file_exists($this->parameters['publicDir'])) {
+            $output->writeln("Create \"{$this->parameters['publicDir']}\" directory");
+            mkdir($this->parameters['publicDir']);
         }
 
-        if (!file_exists('composer.json')) {
-            touch('composer.json');
-            $content = <<<EOF
-{
-    "name": "$this->projectName",
-    "description": "$this->projectName"
-}
-EOF;
+        $this->createIndex($this->parameters['publicDir'] . '/index.php', $output);
+        $this->createConfigurationFile($this->parameters['sourceDir'] . '/config/config.json', $output);
+        $this->createInitClass($this->parameters['sourceDir'] . '/Init.php', $output);
+        $this->createRoutingFile($this->parameters['sourceDir'] . '/routing.xml', $output);
+    }
 
-            file_put_contents('composer.json', $content);
+    private function createIndex($file, OutputInterface $output)
+    {
+        $output->writeln("Create \"{$file}\"");
+
+        if (file_exists($file)) {
+            throw new \Exception('index file already exists');
         }
 
-        if (!file_exists('web/index.php')) {
-            touch('web/index.php');
-            $content = <<<EOF
-<?php
-require_once(__DIR__ . '/../vendor/autoload.php');
-AZE\core\Initializer::initialize();
-EOF;
-            file_put_contents('web/index.php', $content);
+        $content = Resource::get('index.php');
+
+        $aop = "";
+        if (!$this->parameters['without-aop']) {
+            $aop = Resource::get('aop.php');
+            $aop = str_replace('%sourceDir%', $this->parameters['sourceDir'], $aop);
         }
+
+        $content = str_replace('%aop%', $aop, $content);
+        $content = str_replace('%sourceDir%', $this->parameters['sourceDir'], $content);
+
+        file_put_contents($file, $content);
+    }
+
+    private function createConfigurationFile($file, OutputInterface $output)
+    {
+        $output->writeln("Create \"{$file}\"");
+
+        if (file_exists($file)) {
+            throw new \Exception('Configuration file already exists');
+        } else {
+            mkdir(dirname($file), 0755, true);
+        }
+
+        $content = Resource::get('config.json');
+
+        $content = str_replace('%name%', $this->projectName, $content);
+
+        file_put_contents($file, $content);
+    }
+
+    private function createInitClass($file, OutputInterface $output)
+    {
+        $output->writeln("Create \"{$file}\"");
+
+        if (file_exists($file)) {
+            throw new \Exception('Init class file already exists');
+        }
+
+        $content = Resource::get('Init.php');
+
+        file_put_contents($file, $content);
+    }
+
+
+    private function createRoutingFile($file, OutputInterface $output)
+    {
+        $output->writeln("Create \"{$file}\"");
+
+        if (file_exists($file)) {
+            throw new \Exception('Routing file already exists');
+        }
+
+        $content = Resource::get('routing.xml');
+
+        file_put_contents($file, $content);
     }
 }

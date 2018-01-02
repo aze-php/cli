@@ -2,7 +2,7 @@
 namespace %namespace%;
 
 
-class %classname% extends AZE\core\Controller
+class %classname% extends \AZE\core\Controller
 {
     /**
      * Main method which will be call if no specific action is required
