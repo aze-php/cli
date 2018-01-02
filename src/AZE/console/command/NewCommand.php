@@ -65,7 +65,7 @@ class NewCommand extends CommandConfiguration
             $this->composer->execute("require goaop/framework");
         }
 
-        $this->composer->execute("require aze/aze");
+        $this->composer->execute("require aze/aze:dev-master");
         $this->composer->execute("require aze/dumper");
 
         $output->writeln("Installation done");
