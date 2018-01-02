@@ -3,21 +3,25 @@
 namespace AZE\console\command;
 
 use AZE\ComposerHelper;
+use AZE\Resource;
+use AZE\Utils;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ControllerCommand extends \Symfony\Component\Console\Command\Command
+class ControllerCommand extends CommandConfiguration
 {
     private $composer;
 
     private $className;
     private $namespace;
 
+    protected $parameters = array('sourceDir'=>null, 'config'=>null);
+
     /**
-     * Configure the command options.
+     * CommandConfiguration the command options.
      *
      * @return void
      */
@@ -27,7 +31,8 @@ class ControllerCommand extends \Symfony\Component\Console\Command\Command
             ->setName('controller')
             ->setDescription('Create a new AZE controller')
             ->addArgument('name', InputArgument::REQUIRED, "Name of your controller")
-            ->addOption('dir', null, InputOption::VALUE_OPTIONAL, 'directory with your controllers', 'src/controller');
+            ->addOption('sourceDir', null, InputOption::VALUE_REQUIRED, 'Directory containing your sources', 'src/controller')
+            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Configuration file to serve your application', 'config.properties');
     }
 
     /**
@@ -41,9 +46,12 @@ class ControllerCommand extends \Symfony\Component\Console\Command\Command
     {
         $this->composer = new ComposerHelper();
 
-        $cleanName = str_ireplace('/', '\\', $input->getArgument('name'));
-        $this->className = strtoupper(basename($cleanName)[0]) . substr(basename($cleanName), 1, strlen($cleanName) - 2);
-        $this->namespace = 'controller\\' . dirname($input->getArgument('name'));
+        $this->className = ucfirst(Utils::toCamelCase(basename($input->getArgument('name'))));
+
+        $this->namespace = 'controller';
+        if (dirname($input->getArgument('name')) !== '.') {
+            $this->namespace = 'controller\\' . Utils::toCamelCase(dirname($input->getArgument('name')));
+        }
 
         $this->addPsr4Namespace($input);
         $this->createController($input);
@@ -86,7 +94,7 @@ class ControllerCommand extends \Symfony\Component\Console\Command\Command
         }
 
         if (!isset($data['autoload']['psr-4']['controller\\'])) {
-            $data['autoload']['psr-4']['controller\\'] = $input->getOption('dir');
+            $data['autoload']['psr-4']['controller\\'] = $this->parameters['sourceDir'];
             $update = true;
         }
 
@@ -100,12 +108,12 @@ class ControllerCommand extends \Symfony\Component\Console\Command\Command
 
     private function createController(InputInterface $input)
     {
-        $classContent = file_get_contents(dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . 'resources/Controller.php');
+        $classContent = Resource::get('Controller.php');
 
         $classContent = str_replace('%namespace%', $this->namespace, $classContent);
         $classContent = str_replace('%classname%', $this->className, $classContent);
 
-        $directory = dirname(getcwd() . DIRECTORY_SEPARATOR . $input->getOption('dir') . DIRECTORY_SEPARATOR . $input->getArgument('name'));
+        $directory = dirname(getcwd() . DIRECTORY_SEPARATOR . $this->parameters['sourceDir'] . DIRECTORY_SEPARATOR . $input->getArgument('name'));
 
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);

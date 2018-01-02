@@ -1,7 +1,10 @@
 {
     "name": "aze/cli",
     "description": "Aze application installer.",
-    "keywords": ["aze","cli"],
+    "keywords": [
+        "aze",
+        "cli"
+    ],
     "license": "MIT",
     "authors": [
         {
