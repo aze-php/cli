@@ -5,6 +5,7 @@ namespace AZE\Init;
 use AZE\core\configuration\Config;
 use AZE\core\Debug;
 use AZE\core\routing\Router;
+use AZE\log\Logger;
 
 class Init implements \AZE\core\InitializerInterface
 {
@@ -14,7 +15,7 @@ class Init implements \AZE\core\InitializerInterface
         Config::get()->loadJson(__DIR__ . '/config/config.json');
 
         if (Config::get()->debug) {
-            Debug::dump(Config::get());
+            Logger::dump(Config::get());
         }
 
         Router::setRoutes(__DIR__ . '/routing.xml');
