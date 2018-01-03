@@ -15,6 +15,7 @@ class Init implements \AZE\core\InitializerInterface
         Config::get()->loadJson(__DIR__ . '/config/config.json');
 
         if (Config::get()->debug) {
+            Debug::activated(true);
             Logger::dump(Config::get());
         }
 
