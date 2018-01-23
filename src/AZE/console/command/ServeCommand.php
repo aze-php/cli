@@ -1,5 +1,4 @@
 <?php
-
 namespace AZE\console\command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,7 +9,13 @@ class ServeCommand extends CommandConfiguration
 {
     private $publicDir = array('htmldocs', 'public', 'web', 'www');
 
-    protected $parameters = array('host'=>null, 'port'=>null, 'publicDir'=>null, 'config'=>null, 'open'=>null);
+    protected $parameters = array(
+        'host' => null,
+        'port' => null,
+        'publicDir' => null,
+        'config' => null,
+        'open' => null
+    );
 
     /**
      * CommandConfiguration the command options.
@@ -22,11 +27,41 @@ class ServeCommand extends CommandConfiguration
         $this
             ->setName('serve')
             ->setDescription('Serve an AZE application.')
-            ->addOption('host', null, InputOption::VALUE_REQUIRED, 'host use to serve your application', 'localhost')
-            ->addOption('port', null, InputOption::VALUE_REQUIRED, 'port use to serve your application', 80)
-            ->addOption('publicDir', null, InputOption::VALUE_REQUIRED, 'directory containing your public files and your index.php', 'web')
-            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Configuration file to serve your application', 'config.properties')
-            ->addOption('open', 'o', InputOption::VALUE_OPTIONAL, 'Open your default browser once the server is launched', 'false');
+            ->addOption(
+                'host',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'host use to serve your application',
+                'localhost'
+            )
+            ->addOption(
+                'port',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'port use to serve your application',
+                80
+            )
+            ->addOption(
+                'publicDir',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'directory containing your public files and your index.php',
+                'web'
+            )
+            ->addOption(
+                'config',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Configuration file to serve your application',
+                'config.properties'
+            )
+            ->addOption(
+                'open',
+                'o',
+                InputOption::VALUE_OPTIONAL,
+                'Open your default browser once the server is launched',
+                'false'
+            );
     }
 
     /**
@@ -64,7 +99,7 @@ class ServeCommand extends CommandConfiguration
                 $command = 'xdg-open http://' . $this->parameters['host'] . ':' . $this->parameters['port'];
                 break;
             case stristr(PHP_OS, 'DAR'):
-            default :
+            default:
                 break;
         }
 
@@ -73,7 +108,11 @@ class ServeCommand extends CommandConfiguration
 
     private function serve()
     {
-        return shell_exec('php -S ' . $this->parameters['host'] . ':' . $this->parameters['port'] . ' -t ' . $this->parameters['publicDir']);
+        return shell_exec(
+            'php -S '
+            . $this->parameters['host'] . ':' . $this->parameters['port']
+            . ' -t ' . $this->parameters['publicDir']
+        );
     }
 
     private function searchPublicDir()

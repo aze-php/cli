@@ -1,7 +1,6 @@
 <?php
 namespace %namespace%;
 
-
 class %classname% extends \AZE\core\Controller
 {
     /**
@@ -9,11 +8,9 @@ class %classname% extends \AZE\core\Controller
      */
     public function main()
     {
-
     }
 
     public function yourAction()
     {
-
     }
 }

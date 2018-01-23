@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: brice_leboulch
- * Date: 29/11/2017
- * Time: 17:15
- */
-
 namespace AZE;
-
 
 class ComposerHelper
 {

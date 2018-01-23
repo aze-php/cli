@@ -1,14 +1,13 @@
 <?php
 namespace AZE;
 
-
 class Parameter
 {
     private $config = array();
 
     public function __construct($configFilePath = null)
     {
-        $this->config = parse_ini_file($configFilePath, true);;
+        $this->config = parse_ini_file($configFilePath, true);
     }
 
     /**
@@ -23,7 +22,7 @@ class Parameter
                 $config = $config[$section];
             }
 
-            foreach ($keys as $key=>$value) {
+            foreach ($keys as $key => $value) {
                 if (isset($config[$key])) {
                     $this->parameters[$key] = $config[$key];
                 }

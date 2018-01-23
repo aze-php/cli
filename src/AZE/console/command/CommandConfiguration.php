@@ -10,7 +10,7 @@ class CommandConfiguration extends \Symfony\Component\Console\Command\Command
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->parameters as $key=>$value) {
+        foreach ($this->parameters as $key => $value) {
             $this->parameters[$key] = $input->getOption($key) ?: true;
         }
 
@@ -22,7 +22,7 @@ class CommandConfiguration extends \Symfony\Component\Console\Command\Command
                     $config = $config['aze'];
                 }
 
-                foreach ($this->parameters as $key=>$value) {
+                foreach ($this->parameters as $key => $value) {
                     if (isset($config[$key])) {
                         $this->parameters[$key] = $config[$key];
                     }
@@ -33,7 +33,7 @@ class CommandConfiguration extends \Symfony\Component\Console\Command\Command
         $output->writeln('');
         $output->writeln('Configuration used');
         $output->writeln('==================');
-        foreach ($this->parameters as $key=>$value) {
+        foreach ($this->parameters as $key => $value) {
             $output->writeln("\t* " . $key . ' : ' . $this->parameters[$key]);
         }
         $output->writeln('');

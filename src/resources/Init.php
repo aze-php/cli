@@ -1,5 +1,4 @@
 <?php
-
 namespace AZE\Init;
 
 use AZE\core\configuration\Config;
@@ -22,5 +21,4 @@ class Init implements \AZE\core\InitializerInterface
         Router::setRoutes(__DIR__ . '/routing.xml');
         Router::setRoutingType(Router::DYNAMIC);
     }
-
 }

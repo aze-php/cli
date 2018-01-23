@@ -1,5 +1,4 @@
 <?php
-
 namespace AZE\console\command;
 
 use AZE\ComposerHelper;
@@ -18,7 +17,7 @@ class ControllerCommand extends CommandConfiguration
     private $className;
     private $namespace;
 
-    protected $parameters = array('sourceDir'=>null, 'config'=>null);
+    protected $parameters = array('sourceDir' => null, 'config' => null);
 
     /**
      * CommandConfiguration the command options.
@@ -30,9 +29,25 @@ class ControllerCommand extends CommandConfiguration
         $this
             ->setName('controller')
             ->setDescription('Create a new AZE controller')
-            ->addArgument('name', InputArgument::REQUIRED, "Name of your controller")
-            ->addOption('sourceDir', null, InputOption::VALUE_REQUIRED, 'Directory containing your sources', 'src/controller')
-            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Configuration file to serve your application', 'config.properties');
+            ->addArgument(
+                'name',
+                InputArgument::REQUIRED,
+                "Name of your controller"
+            )
+            ->addOption(
+                'sourceDir',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Directory containing your sources',
+                'src/controller'
+            )
+            ->addOption(
+                'config',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Configuration file to serve your application',
+                'config.properties'
+            );
     }
 
     /**
@@ -100,7 +115,7 @@ class ControllerCommand extends CommandConfiguration
 
         if ($update) {
             // Add content to composer.json
-            file_put_contents($file, json_encode($data, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+            file_put_contents($file, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 
             $this->composer->execute("update");
         }
@@ -113,7 +128,11 @@ class ControllerCommand extends CommandConfiguration
         $classContent = str_replace('%namespace%', $this->namespace, $classContent);
         $classContent = str_replace('%classname%', $this->className, $classContent);
 
-        $directory = dirname(getcwd() . DIRECTORY_SEPARATOR . $this->parameters['sourceDir'] . DIRECTORY_SEPARATOR . $input->getArgument('name'));
+        $directory = dirname(
+            getcwd() . DIRECTORY_SEPARATOR
+            . $this->parameters['sourceDir'] . DIRECTORY_SEPARATOR
+            . $input->getArgument('name')
+        );
 
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
