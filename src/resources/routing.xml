@@ -1,3 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
+    <!-- Routing sample -->
+    <!--
+    any access to url "/index.php" will be redirect to "/page.php"
+    <any>
+        <path><![CDATA[/index.php]]></path>
+        <redirect><![CDATA[/page.php]]></redirect>
+    </any>
+    -->
+    <!-- Create an alias
+    any access to url "/page.php" will be compute as an access to "/"
+    <any>
+        <path><![CDATA[/page.php]]></path>
+        <alias><![CDATA[/]]></alias>
+    </any>
+    -->
+    <!--
+    the controller "Index" will be use for any access to url "/"
+    <any>
+        <path><![CDATA[/]]></path>
+        <controller>
+            <name><![CDATA[Index]]></name>
+        </controller>
+    </any>
+    -->
+    <!--
+    the method "login" in controller "Login" will be use when url "/login/login"
+    <get>
+        <path><![CDATA[/login/logout]]></path>
+        <controller>
+            <name><![CDATA[Login]]></name>
+            <action><![CDATA[login]]></action>
+        </controller>
+    </get>
+    -->
+    <!--
+    the method "test" in controller "Login" will be use when url /login/(.*) is requested.
+    Plus, the part behind "/login" will be send as parameter
+    <get>
+        <path><![CDATA[/login/{arg}]]></path>
+        <controller>
+            <name><![CDATA[Login]]></name>
+            <action><![CDATA[test]]></action>
+        </controller>
+    </get>
+    -->
+    <!--
+    the method login in controller "Login" will be use when post datas are send to url "/login/login"
+    <post>
+        <path><![CDATA[/login/login]]></path>
+        <controller>
+            <name><![CDATA[Login]]></name>
+            <action><![CDATA[login]]></action>
+        </controller>
+    </post>
+    -->
+    <!-- methods allowed : any, post, get, put, delete, head, options -->
 </routes>
