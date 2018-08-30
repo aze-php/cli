@@ -23,5 +23,5 @@ script:
   - pdepend --summary-xml=pdepend-summary.xml ./src
   - phpcpd ./src
   - phploc ./src
-  - phpcs --standard=PSR2 src
+  - phpcs --standard=PSR2 src --ignore=resources/*
   - phpunit
