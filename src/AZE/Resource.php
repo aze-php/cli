@@ -1,12 +1,11 @@
 <?php
 namespace AZE;
 
-
 class Resource
 {
     private static $path = __DIR__ . "/../resources";
 
-    static function setPath($path)
+    public static function setPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception('Resource path doesn\'t exist');
@@ -19,7 +18,7 @@ class Resource
         self::$path = $path;
     }
 
-    static function get($relativePath)
+    public static function get($relativePath)
     {
         $fullPath = self::$path . DIRECTORY_SEPARATOR . $relativePath;
 

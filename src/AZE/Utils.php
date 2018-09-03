@@ -1,7 +1,5 @@
 <?php
-
 namespace AZE;
-
 
 class Utils
 {

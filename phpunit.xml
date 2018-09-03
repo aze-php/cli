@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="./test/autoload.php"
+    colors="true"
+    verbose="true"
+    >
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
+    <testsuites>
+        <testsuite name="AZE">
+            <directory>./test/AZE</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

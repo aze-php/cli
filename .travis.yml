@@ -1,0 +1,22 @@
+language: php
+dist: trusty
+php:
+  - '5.4'
+  - '5.5'
+  - '5.6'
+  - '7.0'
+
+before_script:
+  - export PATH=~/.composer/vendor/bin:$PATH
+  - composer global require pdepend/pdepend
+  - composer global require phploc/phploc
+  - composer global require sebastian/phpcpd
+  - composer global require squizlabs/php_codesniffer
+  - composer install
+
+script:
+  - pdepend --summary-xml=pdepend-summary.xml ./src
+  - phpcpd ./src
+  - phploc ./src
+  - phpcs --standard=PSR2 src --ignore=resources/*
+  - phpunit

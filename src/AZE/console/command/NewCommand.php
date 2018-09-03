@@ -15,7 +15,7 @@ class NewCommand extends CommandConfiguration
     private $projectPath = null;
     private $projectName = null;
 
-    protected $parameters = array('sourceDir'=>null, 'publicDir'=>null, 'config'=>null, 'without-aop'=>null);
+    protected $parameters = array('sourceDir' => null, 'publicDir' => null, 'config' => null, 'without-aop' => null);
 
     /**
      * CommandConfiguration the command options.
@@ -27,11 +27,39 @@ class NewCommand extends CommandConfiguration
         $this
             ->setName('new')
             ->setDescription('Create a new AZE application')
-            ->addArgument('name', InputArgument::OPTIONAL, "Name of your application")
-            ->addOption('sourceDir', 'src', InputOption::VALUE_REQUIRED, 'Directory containing your sources', 'src')
-            ->addOption('publicDir', 'public', InputOption::VALUE_REQUIRED, 'Directory containing your public files', 'web')
-            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Configuration file to serve your application', 'config.properties')
-            ->addOption('without-aop', null, InputOption::VALUE_OPTIONAL, 'Deploy your application without aop activated', "true");
+            ->addArgument(
+                'name',
+                InputArgument::OPTIONAL,
+                "Name of your application"
+            )
+            ->addOption(
+                'sourceDir',
+                'src',
+                InputOption::VALUE_REQUIRED,
+                'Directory containing your sources',
+                'src'
+            )
+            ->addOption(
+                'publicDir',
+                'public',
+                InputOption::VALUE_REQUIRED,
+                'Directory containing your public files',
+                'web'
+            )
+            ->addOption(
+                'config',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Configuration file to serve your application',
+                'config.properties'
+            )
+            ->addOption(
+                'without-aop',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Deploy your application without aop activated',
+                "true"
+            );
     }
 
     /**

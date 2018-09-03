@@ -1,5 +1,4 @@
 <?php
-
 namespace AZE\console\command;
 
 use Symfony\Component\Console\Exception\RuntimeException;
@@ -36,7 +35,7 @@ class NewCommand extends \Symfony\Component\Console\Command\Command
                 break;
             case stristr(PHP_OS, 'LINUX'):
             case stristr(PHP_OS, 'DAR'):
-            default :
+            default:
                 $this->nullFile = '/dev/null';
                 break;
         }
