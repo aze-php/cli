@@ -19,7 +19,7 @@
         }
     },
     "require": {
-        "symfony/console": "~2.8.45"
+        "symfony/console": "~4.3.5"
     },
     "bin": [
         "aze"
